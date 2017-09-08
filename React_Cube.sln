@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "React_Cube", "React_Cube\React_Cube.csproj", "{D0D424D0-4C18-4749-AFB5-5BCDA5FF3ABD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "React_Cube.Tests", "React_Cube.Tests\React_Cube.Tests.csproj", "{2BAD1E0F-2094-464C-83C8-BEC1BD286B1B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D0D424D0-4C18-4749-AFB5-5BCDA5FF3ABD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0D424D0-4C18-4749-AFB5-5BCDA5FF3ABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0D424D0-4C18-4749-AFB5-5BCDA5FF3ABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0D424D0-4C18-4749-AFB5-5BCDA5FF3ABD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BAD1E0F-2094-464C-83C8-BEC1BD286B1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BAD1E0F-2094-464C-83C8-BEC1BD286B1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BAD1E0F-2094-464C-83C8-BEC1BD286B1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BAD1E0F-2094-464C-83C8-BEC1BD286B1B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
