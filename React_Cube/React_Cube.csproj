@@ -190,8 +190,6 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
     <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\ResourceModel.cshtml" />
@@ -214,12 +212,17 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\respond.js" />
-    <Content Include="Scripts\respond.min.js" />
+    <Content Include="react-cube\public\favicon.ico" />
+    <Content Include="react-cube\public\index.html" />
+    <None Include="react-cube\src\App.scss" />
+    <Content Include="react-cube\src\App.js" />
+    <Content Include="react-cube\src\App.test.js" />
+    <Content Include="react-cube\src\Cube.js" />
+    <Content Include="react-cube\src\index.css" />
+    <Content Include="react-cube\src\index.js" />
+    <Content Include="react-cube\src\logo.svg" />
+    <Content Include="react-cube\src\registerServiceWorker.js" />
+    <Content Include="react-cube\src\Wysiwyg.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -252,7 +255,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="react-cube\.gitignore" />
+    <Content Include="react-cube\package.json" />
+    <Content Include="react-cube\public\manifest.json" />
+    <Content Include="react-cube\README.md" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
