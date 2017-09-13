@@ -1,5 +1,6 @@
-body {
-    text-align: center;
+body
+{
+	text-align: center;
 }
 
 html,
@@ -10,48 +11,58 @@ body,
 	height: 100%;
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
+@keyframes App-logo-spin
+{
+	from
+	{
+		transform: rotate(0deg);
+	}
 
-    to {
-        transform: rotate(360deg);
-    }
+	to
+	{
+		transform: rotate(360deg);
+	}
 }
 
 $baseSize: 150px;
 
-.cubeContainer {
-    display: inline-block;
-    margin-top: 20%;
-    perspective: $baseSize * 4;
+.cubeContainer
+{
+	display: inline-block;
+	margin-top: 20%;
+	perspective: $baseSize * 4;
 }
 
-.cube {
-    position: relative;
-    transform-style: preserve-3d;
-    animation: rotateCube 13s linear infinite;
-    transform-origin: center;
-    width: $baseSize;
-    height: $baseSize;
+.cube
+{
+	position: relative;
+	transform-style: preserve-3d;
+	animation: rotateCube 13s linear infinite;
+	transform-origin: center;
+	width: $baseSize;
+	height: $baseSize;
 }
 
-@keyframes rotateCube {
-    0% {
-        transform: rotate3d(0,1,1,0deg);
-    }
+@keyframes rotateCube
+{
+	0%
+	{
+		transform: rotate3d(0,1,1,0deg);
+	}
 
-    50% {
-        transform: rotate3d(1,0,1,180deg);
-    }
+	50%
+	{
+		transform: rotate3d(1,0,1,180deg);
+	}
 
-    100% {
-        transform: rotate3d(1,1,0,360deg);
-    }
+	100%
+	{
+		transform: rotate3d(1,1,0,360deg);
+	}
 }
 
-.square {
+.square
+{
 	width: $baseSize;
 	height: $baseSize;
 	*border: 1px solid #000;
@@ -60,40 +71,83 @@ $baseSize: 150px;
 	border: 1px solid;
 }
 
-.front {
+.front
+{
 	background-color: rgba(255,0,0,0.4);
 	transform: translate3d(0,0, $baseSize / 2);
 }
 
-.back {
-    background-color: rgba(0,255,0,0.4);
-    transform: rotateY(180deg) translate3d(0,0, $baseSize / 2);
+.back
+{
+	background-color: rgba(0,255,0,0.4);
+	transform: rotateY(180deg) translate3d(0,0, $baseSize / 2);
 }
 
-.right {
+.right
+{
 	background-color: rgba(0,0,255,0.4);
 	transform: rotateY(90deg) translate3d(0,0, $baseSize / 2);
 }
 
-.left {
+.left
+{
 	background-color: rgba(255,255,0,0.4);
 	transform: rotateY(-90deg) translate3d(0,0, $baseSize / 2);
 }
 
-.bottom {
+.bottom
+{
 	background-color: rgba(255,0,255,0.4);
 	transform: rotateX(-90deg) translate3d(0,0, $baseSize / 2);
 }
 
-.top {
+.top
+{
 	background-color: rgba(0,255,255,0.4);
 	transform: rotateX(90deg) translate3d(0,0, $baseSize / 2);
 }
 
-.settings {
+.settings
+{
 	margin-top: 10%;
 }
+
 .settings > div
 {
 	margin: 1% 0;
+}
+
+.colorPickerSV,
+.colorPickerH
+{
+	border-collapse: collapse;
+	min-width: 200px;
+	max-width: 400px;
+	width: 100%;
+}
+
+.colorPickerSV td
+{
+	padding: 0;
+	border: none;
+	width: 1px;
+	height: 1px;
+}
+
+.colorPickerH
+{
+	margin: 30px 0;
+}
+
+.colorPickerH td
+{
+	height: 10px;
+	width: 1px;
+}
+
+.preview
+{
+	height: 20px;
+	width: 20px;
+	border: 1px solid #ffffff;
 }

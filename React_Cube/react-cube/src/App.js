@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Cube } from './Cube';
-import logo from './logo.svg';
+import { TextEditor } from './TextEditor';
+import { ColorPicker } from './ColorPicker';
 import './App.css';
 
 class App extends Component {
   render() {
 	  return (
-		<Cube />
+		  <ColorPicker precision="3"/>
     );
   }
 }
