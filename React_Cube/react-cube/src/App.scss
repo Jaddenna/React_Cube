@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i');
+
 body
 {
 	text-align: center;
@@ -150,4 +152,83 @@ $baseSize: 150px;
 	height: 20px;
 	width: 20px;
 	border: 1px solid #ffffff;
+}
+
+$calcBackColor: rgb(20,50,50);
+$calcColor: rgb(90,255,100);
+$shadow: darken($calcColor, 40%);
+$minSize: 50px;
+$margin: 4px;
+
+.calculatorContainer
+{
+	width: 100%;
+	height: 100%;
+	background-color: $calcBackColor;
+	color: $calcColor;
+	user-select: none;
+}
+
+.calcColumn
+{
+	display: inline-block;
+	min-width: $minSize;
+	min-height: $minSize;
+	position: relative;
+	margin: $margin;
+}
+
+.calcColumn.calcColumn-4
+{
+	min-width: $minSize * 4 + $margin * 6;
+}
+
+.calcColumn > div
+{
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	background-color: transparent;
+	border: 2px solid $calcColor;
+	color: $calcColor;
+	font-family: Ubuntu;
+	font-weight: bold;
+	font-size: 20px;
+	box-shadow: $shadow 3px 2px;
+}
+
+.calcColumn div.mousedown
+{
+	box-shadow: none;
+	margin-left: 3px;
+	margin-top: 2px;
+}
+
+.calcColumn > div > span
+{
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%,-50%);
+	left: 50%;
+}
+
+.calcRow.resultRow .calcColumn
+{
+	min-height: 75px;
+}
+
+.calcRow.resultRow .previewVal
+{
+	top: 2%;
+	left: 2%;
+	transform: translate(0);
+	font-size: 16px;
+	font-weight: 400;
+}
+.canvas
+{
+	border: 1px solid;
 }

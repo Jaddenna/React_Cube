@@ -217,6 +217,8 @@
     <None Include="react-cube\src\App.scss" />
     <Content Include="react-cube\src\App.js" />
     <Content Include="react-cube\src\App.test.js" />
+    <Content Include="react-cube\src\Calculator.js" />
+    <Content Include="react-cube\src\Canvas.js" />
     <Content Include="react-cube\src\ColorPicker.js" />
     <Content Include="react-cube\src\Cube.js" />
     <Content Include="react-cube\src\index.css" />
