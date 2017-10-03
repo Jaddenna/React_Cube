@@ -10,7 +10,7 @@ import './App.css';
 class App extends Component {
   render() {
 	  return (
-		  <GoLTable />
+		  <GoLTable rows="40" cols="60" />
     );
   }
 }

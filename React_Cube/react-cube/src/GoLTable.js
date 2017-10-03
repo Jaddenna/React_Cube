@@ -129,12 +129,14 @@ export class GoLTable extends Component
 	{
 
 		return (
-			<div>
-				<input type="text" placeholder="speed" ref={el => this.speedTB = el} />
-				<button onClick={this.changeSpeed.bind(this)}>Update Speed</button>
-				<button onClick={this.updateTimer.bind(this)}>Timer</button>
-				<button ref={el => this.updateButton = el} onClick={this.reset.bind(this)}>Reset</button>
-				<table>
+			<div className="golContainer">
+				<div className="golSettings">
+					<input type="text" placeholder="speed" ref={el => this.speedTB = el} />
+					<button onClick={this.changeSpeed.bind(this)}>Update Speed</button>
+					<button onClick={this.updateTimer.bind(this)}>{this.timer == null ? 'Start' : 'Stop' }</button>
+					<button ref={el => this.updateButton = el} onClick={this.reset.bind(this)}>Reset</button>
+				</div>
+				<table className="golTable">
 					<tbody>
 						{this.getTableBody()}
 					</tbody>
