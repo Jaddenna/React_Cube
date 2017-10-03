@@ -221,10 +221,12 @@
     <Content Include="react-cube\src\Canvas.js" />
     <Content Include="react-cube\src\ColorPicker.js" />
     <Content Include="react-cube\src\Cube.js" />
+    <Content Include="react-cube\src\GoLTable.js" />
     <Content Include="react-cube\src\index.css" />
     <Content Include="react-cube\src\index.js" />
     <Content Include="react-cube\src\logo.svg" />
     <Content Include="react-cube\src\registerServiceWorker.js" />
+    <Content Include="react-cube\src\test\GoLTable.test.js" />
     <Content Include="react-cube\src\TextEditor.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -244,6 +246,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
