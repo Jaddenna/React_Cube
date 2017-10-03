@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import './App.css';
 
-export class GoLTable extends Component
+export class CellularMachine extends Component
 {
 	constructor(props)
 	{
@@ -19,6 +19,12 @@ export class GoLTable extends Component
 		this.speed = this.defaultSpeed;
 	}
 
+	getCells() { }
+
+	setCell(r, c) { }
+
+	getCellType(r, c) { }
+
 	getCells()
 	{
 		let rows = this.rows;
@@ -29,7 +35,7 @@ export class GoLTable extends Component
 			let cells = []
 			for (let k = 0; k < cols; k++)
 			{
-				let cell = new Cell(i, k);
+				let cell = this.getCellType(i, k);
 				cells.push(cell);
 			}
 			markup.push(cells);
@@ -46,25 +52,14 @@ export class GoLTable extends Component
 			for (let k = 0; k < this.state.cells[0].length; k++)
 			{
 				let cell = this.state.cells[i][k];
-				cells.push(<CellComponent key={i + '' + k} r={i} c={k}
-					onCellClick={this.setCell.bind(this, i, k)}
-					cell={cell} />);
+				cells.push(this.cellMarkup(i, k, cell));
 			}
 			markup.push(<tr key={i}>{cells}</tr>);
 		}
 		return markup;
 	}
+	cellMarkup(r, c, cell) { }
 
-	setCell(r, c)
-	{
-		this.setState(function (prev, props)
-		{
-			prev.cells[r][c].lives = !prev.cells[r][c].lives;
-			return {
-				cells: prev.cells
-			}
-		})
-	}
 	changeSpeed(e)
 	{
 		this.speed = parseInt(this.speedTB.value);
@@ -76,28 +71,8 @@ export class GoLTable extends Component
 		this.updateTimer();
 	}
 
-	updateGrid(e)
-	{
-		this.setState(function (prev, props)
-		{
-			let matrix = [];
-			for (let i = 0; i < prev.cells.length; i++)
-			{
-				let row = [];
-				for (let k = 0; k < prev.cells[0].length; k++)
-				{
-					prev.cells[i][k].calcState(prev.cells);
-					let newCell = new Cell(i, k);
-					newCell.lives = prev.cells[i][k].calcState(prev.cells);
-					row.push(newCell);
-				}
-				matrix.push(row);
-			}
-			return {
-				cells: matrix
-			}
-		})
-	}
+	updateGrid(e) { }
+
 	updateTimer(e)
 	{
 		if (this.intervall == null)
@@ -125,6 +100,7 @@ export class GoLTable extends Component
 		this.setState({ cells: this.getCells() });
 
 	}
+
 	render()
 	{
 
@@ -133,7 +109,7 @@ export class GoLTable extends Component
 				<div className="golSettings">
 					<input type="text" placeholder="speed" ref={el => this.speedTB = el} />
 					<button onClick={this.changeSpeed.bind(this)}>Update Speed</button>
-					<button onClick={this.updateTimer.bind(this)}>{this.timer == null ? 'Start' : 'Stop' }</button>
+					<button onClick={this.updateTimer.bind(this)}>{this.timer == null ? 'Start' : 'Stop'}</button>
 					<button ref={el => this.updateButton = el} onClick={this.reset.bind(this)}>Reset</button>
 				</div>
 				<table className="golTable">
@@ -146,6 +122,114 @@ export class GoLTable extends Component
 	}
 }
 
+export class GoLTable extends CellularMachine
+{
+	getCellType(r, c)
+	{
+		return new GoLCell(r, c);
+	}
+	setCell(r, c)
+	{
+		this.setState(function (prev, props)
+		{
+			prev.cells[r][c].lives = !prev.cells[r][c].lives;
+			return {
+				cells: prev.cells
+			}
+		})
+	}
+	updateGrid(e)
+	{
+		let ref = this;
+		this.setState(function (prev, props)
+		{
+			let matrix = [];
+			for (let i = 0; i < prev.cells.length; i++)
+			{
+				let row = [];
+				for (let k = 0; k < prev.cells[0].length; k++)
+				{
+					let newCell = new GoLCell(k, i);
+					newCell.lives = matrix[k][i].calcState(matrix);
+					row.push(newCell);
+				}
+				matrix.push(row);
+			}
+			return {
+				cells: matrix
+			}
+		})
+	}
+
+	cellMarkup(r, c, cell)
+	{
+		return <GolCellComponent key={r + '' + c} r={r} c={c}
+			onCellClick={this.setCell.bind(this, r, c)}
+			cell={cell} />;
+	}
+}
+
+export class AntTable extends CellularMachine
+{
+	constructor(props)
+	{
+		super(props);
+		this.currentAntPosition = { r: -1, c: -1 };
+		this.currentAntDirection = AntCell.antdirection.top;
+	}
+	getCellType(r, c)
+	{
+		return new AntCell(r, c);
+	}
+	setCell(r, c)
+	{
+		this.setState(function (prev, props)
+		{
+			prev.cells[r][c].lives = !prev.cells[r][c].lives;
+			this.currentAntPosition = { r: r, c: c };
+			this.currentAntDirection = AntCell.antdirection.top;
+			return {
+				cells: prev.cells
+			}
+		})
+	}
+	updateGrid(e)
+	{
+		let ref = this;
+		this.setState(function (prev, props)
+		{
+			let ap = ref.currentAntPosition;
+			let nextPos = prev.cells[ap.r][ap.c].nextCell(ap, prev.cells, ref.currentAntDirection);
+			if (nextPos.r > 0 && nextPos.c > 0)
+			{
+				prev.cells[ap.r][ap.c].lives = prev.cells[ap.r][ap.c].calcState(prev.cells);
+				ref.currentAntPosition = { r: nextPos.r, c: nextPos.c };
+				ref.currentAntDirection = nextPos.dir;
+			}
+			else
+			{
+				ref.updateTimer();
+			}
+
+			return {
+				cells: prev.cells
+			}
+		})
+	}
+	reset()
+	{
+		super.reset();
+		this.currentAntPosition = { r: -1, c: -1 };
+		this.currentAntDirection = AntCell.antdirection.top;
+	}
+	cellMarkup(r, c, cell)
+	{
+		return <AntCellComponent key={r + '' + c} r={r} c={c}
+			onCellClick={this.setCell.bind(this, r, c)}
+			cell={cell} />;
+	}
+}
+
 export class Cell
 {
 	constructor(r, c)
@@ -155,6 +239,11 @@ export class Cell
 		this.c = c;
 	};
 
+	calcState(matrix) { }
+}
+
+export class GoLCell extends Cell
+{
 	calcState(matrix)
 	{
 		let living = 0;
@@ -199,6 +288,72 @@ export class Cell
 	}
 }
 
+export class AntCell extends Cell
+{
+	static antdirection = {
+		top: 1, right: 2, bottom: 3, left: 4
+	}
+
+	calcState(matrix)
+	{
+		let lives = !this.lives;
+
+		return lives;
+	}
+
+	nextCell(currPos, matrix, currDir)
+	{
+		let aimPos = { r: currPos.r, c: currPos.c, dir: currDir };
+		let maxRow = matrix.length - 1;
+		let maxCol = matrix[0].length - 1
+		if (this.lives)
+		{
+			switch (currDir)
+			{
+				case AntCell.antdirection.top:
+					aimPos.c = currPos.c > 0 ? currPos.c - 1 : -1;
+					aimPos.dir = AntCell.antdirection.left;
+					break;
+				case AntCell.antdirection.right:
+					aimPos.r = currPos.r > 0 ? currPos.r - 1 : -1;
+					aimPos.dir = AntCell.antdirection.top;
+					break;
+				case AntCell.antdirection.bottom:
+					aimPos.c = currPos.c < maxCol ? currPos.c + 1 : -1;
+					aimPos.dir = AntCell.antdirection.right;
+					break;
+				case AntCell.antdirection.left:
+					aimPos.r = currPos.r < maxRow ? currPos.r + 1 : -1;
+					aimPos.dir = AntCell.antdirection.bottom;
+					break;
+			}
+		}
+		else
+		{
+			switch (currDir)
+			{
+				case AntCell.antdirection.top:
+					aimPos.c = currPos.c < maxCol ? currPos.c + 1 : -1;
+					aimPos.dir = AntCell.antdirection.right;
+					break;
+				case AntCell.antdirection.right:
+					aimPos.r = currPos.r < maxRow ? currPos.r + 1 : -1;
+					aimPos.dir = AntCell.antdirection.bottom;
+					break;
+				case AntCell.antdirection.bottom:
+					aimPos.c = currPos.c > 0 ? currPos.c - 1 : -1;
+					aimPos.dir = AntCell.antdirection.left;
+					break;
+				case AntCell.antdirection.left:
+					aimPos.r = currPos.r > 0 ? currPos.r - 1 : -1;
+					aimPos.dir = AntCell.antdirection.top;
+					break;
+			}
+		}
+		return aimPos;
+	}
+}
+
 export class CellComponent extends Component
 {
 	constructor(props)
@@ -219,13 +374,8 @@ export class CellComponent extends Component
 			this.props.onCellClick();
 		}
 	}
-	className()
-	{
-		let className = 'cell';
-		className += this.props.cell.lives ? ' cellLives' : '';
-		className += this.state.isHovered ? ' cellHover' : '';
-		return className;
-	}
+	className() { }
+
 	render()
 	{
 		return (
@@ -235,5 +385,27 @@ export class CellComponent extends Component
 				onClick={this.markClick.bind(this)}
 			></td>
 		);
+	}
+}
+
+export class GolCellComponent extends CellComponent
+{
+	className()
+	{
+		let className = 'cell';
+		className += this.props.cell.lives ? ' cellLives' : '';
+		className += this.state.isHovered ? ' cellHover' : '';
+		return className;
+	}
+}
+
+export class AntCellComponent extends CellComponent
+{
+	className()
+	{
+		let className = 'cell';
+		className += this.props.cell.lives ? ' cellLives' : '';
+		className += this.state.isHovered ? ' cellHover' : '';
+		return className;
 	}
 }

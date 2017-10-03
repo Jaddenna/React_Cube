@@ -2,7 +2,7 @@
 import ReactDOM from 'react-dom';
 import ReactTestUtils, { Simulate } from 'react-dom/test-utils';
 import TestRenderer from 'react-test-renderer';
-import { Cell, GoLTable, CellComponent } from '../GoLTable';
+import { GoLCell, GoLTable, GolCellComponent } from '../GoLTable';
 
 describe('Calculator', function ()
 {
