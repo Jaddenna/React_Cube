@@ -110,6 +110,7 @@ export class CellularMachine extends Component
 					<input type="text" placeholder="speed" ref={el => this.speedTB = el} />
 					<button onClick={this.changeSpeed.bind(this)}>Update Speed</button>
 					<button onClick={this.updateTimer.bind(this)}>{this.timer == null ? 'Start' : 'Stop'}</button>
+					<button onClick={this.updateGrid.bind(this)}>Next</button>
 					<button ref={el => this.updateButton = el} onClick={this.reset.bind(this)}>Reset</button>
 				</div>
 				<table className="golTable">
@@ -149,8 +150,8 @@ export class GoLTable extends CellularMachine
 				let row = [];
 				for (let k = 0; k < prev.cells[0].length; k++)
 				{
-					let newCell = new GoLCell(k, i);
-					newCell.lives = matrix[k][i].calcState(matrix);
+					let newCell = new GoLCell(i, k);
+					newCell.lives = prev.cells[i][k].calcState(prev.cells);
 					row.push(newCell);
 				}
 				matrix.push(row);
@@ -186,6 +187,7 @@ export class AntTable extends CellularMachine
 		this.setState(function (prev, props)
 		{
 			prev.cells[r][c].lives = !prev.cells[r][c].lives;
+			prev.cells[r][c].isAnt = true;
 			this.currentAntPosition = { r: r, c: c };
 			this.currentAntDirection = AntCell.antdirection.top;
 			return {
@@ -199,12 +201,14 @@ export class AntTable extends CellularMachine
 		this.setState(function (prev, props)
 		{
 			let ap = ref.currentAntPosition;
+			prev.cells[ap.r][ap.c].isAnt = -1;
 			let nextPos = prev.cells[ap.r][ap.c].nextCell(ap, prev.cells, ref.currentAntDirection);
 			if (nextPos.r > 0 && nextPos.c > 0)
 			{
 				prev.cells[ap.r][ap.c].lives = prev.cells[ap.r][ap.c].calcState(prev.cells);
 				ref.currentAntPosition = { r: nextPos.r, c: nextPos.c };
 				ref.currentAntDirection = nextPos.dir;
+				prev.cells[nextPos.r][nextPos.c].isAnt = nextPos.dir;
 			}
 			else
 			{
@@ -269,19 +273,28 @@ export class GoLCell extends Cell
 			living += c < matrix[0].length - 1 && matrix[r + 1][c + 1].lives ? 1 : 0;
 		}
 
-		if (lives)
+		//if (lives)
+		//{
+		//	if (living < 2 || 3 < living)
+		//	{
+		//		lives = false;
+		//	}
+		//}
+		//else
+		//{
+		//	if (living == 3)
+		//	{
+		//		lives = true;
+		//	}
+		//}
+
+		if (living % 2 == 1)
 		{
-			if (living < 2 || 3 < living)
-			{
-				lives = false;
-			}
+			lives = true;
 		}
 		else
 		{
-			if (living == 3)
-			{
-				lives = true;
-			}
+			lives = false;
 		}
 
 		return lives;
@@ -294,6 +307,8 @@ export class AntCell extends Cell
 		top: 1, right: 2, bottom: 3, left: 4
 	}
 
+	isAnt = -1;
+
 	calcState(matrix)
 	{
 		let lives = !this.lives;
@@ -305,51 +320,28 @@ export class AntCell extends Cell
 	{
 		let aimPos = { r: currPos.r, c: currPos.c, dir: currDir };
 		let maxRow = matrix.length - 1;
-		let maxCol = matrix[0].length - 1
-		if (this.lives)
+		let maxCol = matrix[0].length - 1;
+		let sign = this.lives ? 1 : -1;
+
+		switch (currDir)
 		{
-			switch (currDir)
-			{
-				case AntCell.antdirection.top:
-					aimPos.c = currPos.c > 0 ? currPos.c - 1 : -1;
-					aimPos.dir = AntCell.antdirection.left;
-					break;
-				case AntCell.antdirection.right:
-					aimPos.r = currPos.r > 0 ? currPos.r - 1 : -1;
-					aimPos.dir = AntCell.antdirection.top;
-					break;
-				case AntCell.antdirection.bottom:
-					aimPos.c = currPos.c < maxCol ? currPos.c + 1 : -1;
-					aimPos.dir = AntCell.antdirection.right;
-					break;
-				case AntCell.antdirection.left:
-					aimPos.r = currPos.r < maxRow ? currPos.r + 1 : -1;
-					aimPos.dir = AntCell.antdirection.bottom;
-					break;
-			}
+			case AntCell.antdirection.top:
+				aimPos.c = currPos.c > 0 ? currPos.c - sign : -1;
+				break;
+			case AntCell.antdirection.right:
+				aimPos.r = currPos.r > 0 ? currPos.r - sign : -1;
+				break;
+			case AntCell.antdirection.bottom:
+				aimPos.c = currPos.c < maxCol ? currPos.c + sign : -1;
+				break;
+			case AntCell.antdirection.left:
+				aimPos.r = currPos.r < maxRow ? currPos.r + sign : -1;
+				break;
 		}
-		else
-		{
-			switch (currDir)
-			{
-				case AntCell.antdirection.top:
-					aimPos.c = currPos.c < maxCol ? currPos.c + 1 : -1;
-					aimPos.dir = AntCell.antdirection.right;
-					break;
-				case AntCell.antdirection.right:
-					aimPos.r = currPos.r < maxRow ? currPos.r + 1 : -1;
-					aimPos.dir = AntCell.antdirection.bottom;
-					break;
-				case AntCell.antdirection.bottom:
-					aimPos.c = currPos.c > 0 ? currPos.c - 1 : -1;
-					aimPos.dir = AntCell.antdirection.left;
-					break;
-				case AntCell.antdirection.left:
-					aimPos.r = currPos.r > 0 ? currPos.r - 1 : -1;
-					aimPos.dir = AntCell.antdirection.top;
-					break;
-			}
-		}
+		let tempdir = currDir - sign;
+		aimPos.dir = tempdir == 0 ? AntCell.antdirection.left
+			: tempdir == 5 ? AntCell.antdirection.top
+				: tempdir;
 		return aimPos;
 	}
 }
@@ -406,6 +398,11 @@ export class AntCellComponent extends CellComponent
 		let className = 'cell';
 		className += this.props.cell.lives ? ' cellLives' : '';
 		className += this.state.isHovered ? ' cellHover' : '';
+		className += this.props.cell.isAnt > 0 ? ' isAnt' : '';
+		className += this.props.cell.isAnt == 1 ? ' isAntTop' : '';
+		className += this.props.cell.isAnt == 2 ? ' isAntRight' : '';
+		className += this.props.cell.isAnt == 3 ? ' isAntBottom' : '';
+		className += this.props.cell.isAnt == 4 ? ' isAntLeft' : '';
 		return className;
 	}
 }

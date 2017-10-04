@@ -174,3 +174,28 @@ body,
 .cellLives {
   background-color: red;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2) inset; }
+
+.cell.isAnt {
+  background-color: lime;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2) inset;
+  position: relative; }
+
+.cell.isAnt::after {
+  content: '';
+  background: url(img/ant.png) no-repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-size: contain; }
+
+.cell.isAnt.isAntBottom::after {
+  transform: rotate(-90deg); }
+
+.cell.isAnt.isAntTop::after {
+  transform: rotate(90deg); }
+
+.cell.isAnt.isAntRight::after {
+  transform: rotate(180deg); }

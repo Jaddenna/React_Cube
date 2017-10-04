@@ -2,11 +2,11 @@
 import ReactDOM from 'react-dom';
 import ReactTestUtils, { Simulate } from 'react-dom/test-utils';
 import TestRenderer from 'react-test-renderer';
-import { GoLCell, GoLTable, GolCellComponent } from '../GoLTable';
+import { AntCell, AntTable, AntCellComponent, GoLCell, GoLTable, GolCellComponent } from '../GoLTable';
 
-describe('Calculator', function ()
+describe('GolTable', function ()
 {
-	it('born again', function()
+	it('born again', function ()
 	{
 		const testRenderer = TestRenderer.create(<GoLTable />).getInstance();
 		let matrix = testRenderer.state.cells;
@@ -193,7 +193,7 @@ describe('Calculator', function ()
 	{
 		const testRenderer = TestRenderer.create(<GoLTable />).getInstance();
 		let matrix = testRenderer.state.cells;
-		let lastCol = matrix[0].length  - 1;
+		let lastCol = matrix[0].length - 1;
 		let lastRow = matrix.length - 1;
 		matrix[lastRow - 1][lastCol - 1].lives = true;
 		matrix[lastRow - 1][lastCol].lives = true;
@@ -220,3 +220,27 @@ describe('Calculator', function ()
 
 
 });
+
+describe('AntTable', function ()
+{
+	it('position ccw', function ()
+	{
+		const testRenderer = TestRenderer.create(<AntTable />).getInstance();
+		let matrix = testRenderer.state.cells;
+		testRenderer.setCell(13, 13);
+		expect(JSON.stringify(matrix[13][13].nextCell({ r: 13, c: 13 }, matrix, AntCell.antdirection.top))).toBe(JSON.stringify({ r: 13, c: 12, dir: AntCell.antdirection.left }));
+		expect(JSON.stringify(matrix[13][13].nextCell({ r: 13, c: 13 }, matrix, AntCell.antdirection.left))).toBe(JSON.stringify({ r: 14, c: 13, dir: AntCell.antdirection.bottom }));
+		expect(JSON.stringify(matrix[13][13].nextCell({ r: 13, c: 13 }, matrix, AntCell.antdirection.bottom))).toBe(JSON.stringify({ r: 13, c: 14, dir: AntCell.antdirection.right }));
+		expect(JSON.stringify(matrix[13][13].nextCell({ r: 13, c: 13 }, matrix, AntCell.antdirection.right))).toBe(JSON.stringify({ r: 12, c: 13, dir: AntCell.antdirection.top }));
+	});
+	it('position cw', function ()
+	{
+		const testRenderer = TestRenderer.create(<AntTable />).getInstance();
+		let matrix = testRenderer.state.cells;
+		expect(JSON.stringify(matrix[13][13].nextCell({ r: 13, c: 13 }, matrix, AntCell.antdirection.top))).toBe(JSON.stringify({ r: 13, c: 14, dir: AntCell.antdirection.right }));
+		expect(JSON.stringify(matrix[13][13].nextCell({ r: 13, c: 13 }, matrix, AntCell.antdirection.right))).toBe(JSON.stringify({ r: 14, c: 13, dir: AntCell.antdirection.bottom }));
+		expect(JSON.stringify(matrix[13][13].nextCell({ r: 13, c: 13 }, matrix, AntCell.antdirection.bottom))).toBe(JSON.stringify({ r: 13, c: 12, dir: AntCell.antdirection.left }));
+		expect(JSON.stringify(matrix[13][13].nextCell({ r: 13, c: 13 }, matrix, AntCell.antdirection.left))).toBe(JSON.stringify({ r: 12, c: 13, dir: AntCell.antdirection.top }));
+	});
+
+})
